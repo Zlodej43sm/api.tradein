@@ -1,6 +1,7 @@
-const db = {};
+const User = require("./User");
+const Role = require("./Role");
 
-db.User = require("./User");
-db.Role = require("./Role");
-
-module.exports = db;
+module.exports = {
+  User,
+  Role
+};
