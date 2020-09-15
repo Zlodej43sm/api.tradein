@@ -1,28 +1,32 @@
 {
   "name": "tradein",
   "version": "1.0.0",
-  "description": "Trade-in app",
+  "description": "Trade-in API",
   "main": "app.js",
   "scripts": {
-    "start": "env-cmd -f .env nodemon app"
+    "start-dev": "env-cmd -e dev nodemon --inspect app",
+    "start": "env-cmd -e prod node app"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Zlodej43sm/tradein.git"
+    "url": "git+https://github.com/Zlodej43sm/api.tradein.git"
   },
-  "author": "",
+  "author": "Alec Povolotskiy",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Zlodej43sm/tradein/issues"
+    "url": "https://github.com/Zlodej43sm/api.tradein/issues"
   },
-  "homepage": "https://github.com/Zlodej43sm/tradein#readme",
+  "homepage": "https://github.com/Zlodej43sm/api.tradein#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-validator": "^6.6.1",
+    "helmet": "^4.1.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.1",
     "mongoose": "^5.10.3",
-    "validator": "^13.1.1"
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "env-cmd": "^10.1.0",
