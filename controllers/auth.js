@@ -45,11 +45,7 @@ auth.signin = async({ body: { username, password } }, res) => {
     const accessToken = jwt.sign({ id: user.id }, process.env.JWT_KEY, {
       expiresIn: process.env.TOKEN_EXPIRES_IN
     });
-    const roles = [];
-
-    for (let i = 0; i < user.roles.length; i++) {
-      roles.push("ROLE_" + user.roles[i].name.toUpperCase());
-    }
+    const roles = user.roles.map(({ name }) => `ROLE_${name.toUpperCase()}`);
 
     res.status(statusCodes.OK).send({
       id: user._id,
