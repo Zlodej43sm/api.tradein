@@ -6,12 +6,14 @@
 `POST: /v1/auth/signup`
 
 **Params**
+`roles` - optional, default 'user'
+
 ```JSON
 {
   "username": "Test",
   "email": "test@test.com",
   "password": "12345678",
-  "roles": [ "admin" ] // optional, default 'user'
+  "roles": [ "admin" ]
 }
 ```
 
