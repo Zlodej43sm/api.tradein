@@ -1,4 +1,4 @@
-const password = {
+module.exports = {
   isLength: {
     errorMessage: "Username should be max 50 char long",
     options: {
@@ -6,4 +6,3 @@ const password = {
     }
   }
 };
-module.exports = password;
