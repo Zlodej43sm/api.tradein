@@ -18,12 +18,12 @@ verifySignUp.checkDuplicateUsernameOrEmail = async({ body: { username, email } }
         message.push("Email is already in use!");
       }
       
-      res.status(statusCodes.BAD_REQ).send({ message });
+      res.status(statusCodes.BAD_REQ).json({ message });
     } else {
       next();
     }
-  } catch ({ message, stack }) {
-    res.status(statusCodes.ERR).send({ message, stack } );
+  } catch ({ message }) {
+    res.status(statusCodes.ERR).json({ message } );
   }
 };
 
@@ -31,7 +31,7 @@ verifySignUp.checkRolesExisted = ({ body: { roles } }, res, next) => {
   if (roles) {
     for (let i = 0; i < roles.length; i++) {
       if (!ROLES.includes(roles[i])) {
-        res.status(statusCodes.BAD_REQ).send({ message: "Role does not exist!" });
+        res.status(statusCodes.BAD_REQ).json({ message: "Role does not exist!" });
         return;
       }
     }

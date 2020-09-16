@@ -7,12 +7,12 @@ auth.verifyToken = (req, res, next) => {
   const token = req.headers["x-access-token"];
 
   if (!token) {
-    return res.status(statusCodes.FORBIDDEN).send({ message: "No token provided!" });
+    return res.status(statusCodes.FORBIDDEN).json({ message: "No token provided!" });
   }
 
   jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
     if (err) {
-      return res.status(statusCodes.UNAUTHORIZED).send({ message: "Unauthorized!" });
+      return res.status(statusCodes.UNAUTHORIZED).json({ message: "Unauthorized!" });
     }
 
     req.userId = decoded.id;
@@ -33,9 +33,9 @@ auth.isAdmin = async({ userId }, res, next) => {
       }
     }
 
-    res.status(statusCodes.FORBIDDEN).send({ message: "Require Admin Role!" });
-  } catch ({ message, stack }) {
-    res.status(statusCodes.ERR).send({ message, stack });
+    res.status(statusCodes.FORBIDDEN).json({ message: "Require Admin Role!" });
+  } catch ({ message }) {
+    res.status(statusCodes.ERR).json({ message });
   }
 };
 
@@ -52,9 +52,9 @@ auth.isModerator = async({ userId }, res, next) => {
       }
     }
 
-    res.status(statusCodes.FORBIDDEN).send({ message: "Require Moderator Role!" });
-  } catch ({ message, stack }) {
-    res.status(statusCodes.ERR).send({ message, stack });
+    res.status(statusCodes.FORBIDDEN).json({ message: "Require Moderator Role!" });
+  } catch ({ message }) {
+    res.status(statusCodes.ERR).json({ message });
   }
 };
 
