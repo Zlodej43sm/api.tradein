@@ -21,12 +21,12 @@ index.once("open", () => {
 });
 
 function initialSuRole() {
-  Role.estimatedDocumentCount(async(err, count) => {
+  Role.estimatedDocumentCount((err, count) => {
     if (!err && count === 0) {
       let rolesCount = 0;
       while (rolesCount < ROLES.length) {
         const name = ROLES[rolesCount];
-        await new Role({ name })
+        new Role({ name })
           .save(e => {
             const msg = e ? `error: ${e}` : `Added ${name} to roles collection`;
             console.error(msg);
