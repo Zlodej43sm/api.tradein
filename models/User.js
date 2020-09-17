@@ -22,12 +22,10 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now()
   },
-  roles: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Role"
-    }
-  ]
+  role: {
+    type: Schema.Types.ObjectId,
+    ref: "Role"
+  }
 });
 const User = model("User", userSchema);
 
