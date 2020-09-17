@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGODB_URL, {
 const dbConnect = mongoose.connection;
 const initialRolesAndSu = async() => {
   try {
-    let rolesCount = await Role.estimatedDocumentCount();
+    const rolesCount = await Role.estimatedDocumentCount();
     if (!rolesCount) {
       for (roleKey in ROLES) {
         const name = ROLES[roleKey];
@@ -34,7 +34,7 @@ const initialRolesAndSu = async() => {
 };
 const initialSuper = async() => {
   try {
-    let usersCount = await User.estimatedDocumentCount();
+    const usersCount = await User.estimatedDocumentCount();
     if (!usersCount) {
       const userSuperRole = await Role.findOne({ name: defaultInitRole });
       const userData = {
