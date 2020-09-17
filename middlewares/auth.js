@@ -1,58 +1,42 @@
 const jwt = require("jsonwebtoken");
-const { User, Role } = require("../models");
+
 const { ROLES, statusCodes } = require("../utils/constants");
+const { User } = require("../models");
+
 const auth = {};
 
 auth.verifyToken = (req, res, next) => {
-  const token = req.headers["x-access-token"];
-
-  if (!token) {
-    return res.status(statusCodes.FORBIDDEN).json({ message: "No token provided!" });
-  }
-
-  jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
-    if (err) {
-      return res.status(statusCodes.UNAUTHORIZED).json({ message: "Unauthorized!" });
-    }
-
-    req.userId = decoded.id;
-    next();
-  });
-};
-
-auth.isAdmin = async({ userId }, res, next) => {
   try {
-    const { roles } = await User.findById(userId);
-    const targetRoles = await Role.find({ _id: { $in: roles } });
+    const token = req.headers["x-access-token"];
 
-    for (let i = 0; i < targetRoles.length; i++) {
-      const { name } = targetRoles[i];
-      if (name === ROLES[0] || name === ROLES[1]) {
-        next();
-        return;
-      }
+    if (!token) {
+      return res.status(statusCodes.FORBIDDEN).json({ message: "No token provided!" });
     }
 
-    res.status(statusCodes.FORBIDDEN).json({ message: "Require Admin Role!" });
+    jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+      if (err) {
+        return res.status(statusCodes.UNAUTHORIZED).json({ message: "Unauthorized!" });
+      }
+
+      req.userId = decoded.id;
+      next();
+    });
   } catch ({ message }) {
     res.status(statusCodes.ERR).json({ message });
   }
 };
 
-auth.isModerator = async({ userId }, res, next) => {
+auth.isAdmin = async({ userId }, res, next) => {
   try {
-    const { roles } = await User.findById(userId);
-    const targetRoles = await Role.find({ _id: { $in: roles } });
+    const user = await User.findById(userId).populate("role");
+    const { name: roleName } = user.get("role");
 
-    for (let i = 0; i < targetRoles.length; i++) {
-      const { name } = targetRoles[i];
-      if (name === ROLES[2]) {
-        next();
-        return;
-      }
+    if (ROLES.superUser === roleName) {
+      next();
+      return;
     }
 
-    res.status(statusCodes.FORBIDDEN).json({ message: "Require Moderator Role!" });
+    res.status(statusCodes.FORBIDDEN).json({ message: "Require Admin Role!" });
   } catch ({ message }) {
     res.status(statusCodes.ERR).json({ message });
   }

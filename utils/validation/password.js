@@ -1,4 +1,5 @@
 module.exports = {
+  in: ["body"],
   errorMessage: "Password should be combination of one uppercase, one lower case, one special char, one digit and min 7, max 50 char long",
   isLength: {
     options: {

@@ -1,11 +1,12 @@
-const { User } = require("../models");
 const { ROLES, statusCodes } = require("../utils/constants");
+const { User } = require("../models");
+
 const verifySignUp = {};
 
 verifySignUp.checkDuplicateUsernameOrEmail = async({ body: { username, email } }, res, next) => {
   try {
-    const isUsernameExist = await User.findOne({ username });
-    const isEmailExist = await User.findOne({ email });
+    const isUsernameExist = await User.exists({ username });
+    const isEmailExist = await User.exists({ email });
 
     if(isUsernameExist || isEmailExist) {
       const message = [];
@@ -27,15 +28,16 @@ verifySignUp.checkDuplicateUsernameOrEmail = async({ body: { username, email } }
   }
 };
 
-verifySignUp.checkRolesExisted = ({ body: { roles } }, res, next) => {
-  if (roles) {
-    for (let i = 0; i < roles.length; i++) {
-      if (!ROLES.includes(roles[i])) {
-        res.status(statusCodes.BAD_REQ).json({ message: "Role does not exist!" });
-        return;
-      }
+verifySignUp.checkRoleExisted = ({ body: { role } }, res, next) => {
+  if (role) {
+    const isRoleExist = ROLES[role];
+
+    if (!isRoleExist) {
+      res.status(statusCodes.BAD_REQ).json({ message: "Role does not exist!" });
+      return;
     }
   }
+
   next();
 };
 
